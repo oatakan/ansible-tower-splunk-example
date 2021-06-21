@@ -16,6 +16,10 @@ nodes:
         name: api
         route: yes
         secure: yes
+      - port: 9199
+        name: tower
+        route: yes
+        secure: yes
     domain: home.ad
     memory: 8192
     cpu: 2
