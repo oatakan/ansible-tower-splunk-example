@@ -19,7 +19,7 @@ nodes:
       - port: 9199
         name: tower
         route: yes
-        secure: yes
+        secure: no
     domain: home.ad
     memory: 8192
     cpu: 2
