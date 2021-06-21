@@ -9,9 +9,11 @@ nodes:
         size: 30GiB
     ports:
       - port: 8443
+        name: web
         route: yes
         secure: yes
       - port: 8089
+        name: api
         route: yes
         secure: yes
     domain: home.ad
