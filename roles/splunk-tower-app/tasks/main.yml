@@ -7,7 +7,7 @@
 
 - name: import Ansible Tower app into Splunk
   uri:
-    url: https://{{ inventory_hostname }}:{{ splunk_api_port }}/services/apps/appinstall
+    url: https://{{ ansible_host }}:{{ splunk_api_port }}/services/apps/appinstall
     user: "{{ splunk_common_admin_user }}"
     password: "{{ splunk_common_admin_passwd }}"
     method: POST
