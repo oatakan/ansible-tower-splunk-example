@@ -1,0 +1,3 @@
+---
+
+splunk_api_port: "{{ kube_service_ports['svc-8089'] if (kube_service_ports is defined and kube_service_ports['svc-8089'] is defined) else ('8089') }}"

@@ -6,7 +6,7 @@
     ansible_network_os: splunk.es.splunk
     ansible_user: "{{ splunk_common_admin_user }}"
     ansible_httpapi_pass: "{{ splunk_common_admin_passwd }}"
-    ansible_httpapi_port: 8089
+    ansible_httpapi_port: "{{ kube_service_ports['svc-8089'] if (kube_service_ports is defined and kube_service_ports['svc-8089'] is defined) else ('8089') }}"
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: False
     ansible_connection: httpapi

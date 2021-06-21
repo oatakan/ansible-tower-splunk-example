@@ -9,6 +9,11 @@ nodes:
         size: 30GiB
     ports:
       - port: 8443
+        route: yes
+        secure: yes
+      - port: 8089
+        route: yes
+        secure: yes
     domain: home.ad
     memory: 8192
     cpu: 2
