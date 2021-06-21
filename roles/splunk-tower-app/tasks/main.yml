@@ -1,0 +1,46 @@
+---
+
+- name: copy app over to splunk server
+  copy:
+    src: ansible_tower.spl
+    dest: /tmp/ansible_tower.spl
+
+- name: import Ansible Tower app into Splunk
+  uri:
+    url: https://{{ inventory_hostname }}:{{ splunk_api_port }}/services/apps/appinstall
+    user: "{{ splunk_common_admin_user }}"
+    password: "{{ splunk_common_admin_passwd }}"
+    method: POST
+    validate_certs: no
+    status_code: 200
+    force_basic_auth: yes
+    body_format: form-urlencoded
+    body:
+      name: /tmp/ansible_tower.spl
+  register: splunk_install_app
+  delegate_to: localhost
+  become: no
+  changed_when: splunk_install_app.status in [200, 201]
+  failed_when: splunk_install_app.status not in [200, 201, 409]
+  notify:
+    - restart splunk
+  when:
+    - splunk_common_admin_user is defined
+    - splunk_common_admin_passwd is defined
+
+- name: ensure directory exists
+  file:
+    path: /opt/splunk/etc/users/{{ splunk_common_admin_user | default('admin') }}/ansible_tower/local/data/models/
+    owner: splunk
+    group: splunk
+    state: directory
+
+- name: copy all_events data model
+  copy:
+    src: all_events.json
+    dest: /opt/splunk/etc/users/{{ splunk_common_admin_user | default('admin') }}/ansible_tower/local/data/models/all_events.json
+    owner: splunk
+    group: splunk
+    mode: '0600'
+  notify:
+    - restart splunk
