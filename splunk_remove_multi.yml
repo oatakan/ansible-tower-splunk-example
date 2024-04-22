@@ -1,6 +1,6 @@
 - name: Remove Splunk Servers
   hosts: all
-  gather_facts: False
+  gather_facts: false
   connection: local
   become: no
   vars:
@@ -12,4 +12,4 @@
     - role: ansible-role-{{ provider }}
       role_action: deprovision
       delegate_to: localhost
-      run_once: yes
+      run_once: true

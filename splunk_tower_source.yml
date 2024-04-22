@@ -1,5 +1,5 @@
-- hosts: '*_role_splunk'
-  gather_facts: False
+- hosts: '*_role_splunk:all'
+  gather_facts: false
   collections:
     - splunk.es
   vars:
@@ -7,15 +7,25 @@
     ansible_user: "{{ splunk_common_admin_user }}"
     ansible_httpapi_pass: "{{ splunk_common_admin_passwd }}"
     ansible_httpapi_port: "{{ kube_service_ports['api'] if (kube_service_ports is defined and kube_service_ports['api'] is defined) else ('8089') }}"
-    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_use_ssl: no
     ansible_httpapi_validate_certs: False
     ansible_connection: httpapi
 
   tasks:
+#    - name: create splunk_data_input_network
+#      splunk.es.data_input_network:
+#        name: "9199"
+#        protocol: "tcp"
+#        source: "http:tower_logging_collections"
+#        sourcetype: "httpevent"
+#        state: "present"
+
     - name: create splunk_data_input_network
-      splunk.es.data_input_network:
-        name: "9199"
-        protocol: "tcp"
-        source: "http:tower_logging_collections"
-        sourcetype: "httpevent"
-        state: "present"
+      splunk.es.splunk_data_inputs_network:
+        config:
+          - name: "9199"
+            protocol: tcp
+            datatype: raw
+            source: "http:tower_logging_collections"
+            sourcetype: "httpevent"
+        state: replaced

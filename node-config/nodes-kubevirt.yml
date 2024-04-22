@@ -19,10 +19,10 @@ nodes:
       - port: 9199
         name: tower
         route: yes
-        secure: no
+        secure: yes
     domain: home.ad
     memory: 8192
     cpu: 2
     user_name: root
     root_password: '{{ ansible_password | default(ansible_ssh_password) | default("password") }}'
-    template: "{{ infra_template_name | default('centos84-x64-v1') }}"
+    template: "{{ infra_template_name | default('rhel93-x64-v1') }}"

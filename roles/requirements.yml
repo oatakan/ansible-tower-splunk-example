@@ -13,6 +13,3 @@
 - src: https://github.com/oatakan/ansible-role-openshift-add-auth-config.git
   version: origin/master
   name: oatakan.openshift-add-auth-config
-
-- src: https://github.com/andrewmackett/ansible-splunk-common.git
-  version: origin/master

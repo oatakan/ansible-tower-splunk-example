@@ -7,7 +7,7 @@
 
 - name: import Ansible Tower app into Splunk
   uri:
-    url: https://{{ ansible_host }}:{{ splunk_api_port }}/services/apps/appinstall
+    url: https://{{ hostvars[inventory_hostname]['ansible_host'] | default(inventory_hostname) }}:{{ splunk_api_port }}/services/apps/local
     user: "{{ splunk_common_admin_user }}"
     password: "{{ splunk_common_admin_passwd }}"
     method: POST
@@ -16,10 +16,12 @@
     force_basic_auth: yes
     body_format: form-urlencoded
     body:
-      name: /tmp/ansible_tower.spl
+      name: '{{ app_file_path }}'
+      update: 'True'
+      filename: 'True'
   register: splunk_install_app
   delegate_to: localhost
-  become: no
+  become: false
   changed_when: splunk_install_app.status in [200, 201]
   failed_when: splunk_install_app.status not in [200, 201, 409]
   notify:
@@ -27,6 +29,9 @@
   when:
     - splunk_common_admin_user is defined
     - splunk_common_admin_passwd is defined
+  vars:
+    app_file_path: /tmp/ansible_tower.spl
+    splunk_api_url: https://{{ hostvars[inventory_hostname]['ansible_host'] | default(inventory_hostname) }}:{{ splunk_api_port }}
 
 - name: ensure directory exists
   file:
