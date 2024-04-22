@@ -5,16 +5,7 @@
     splunk_admin_username: '{{ splunk_common_admin_user | default("admin") }}'
     splunk_admin_password: '{{ splunk_common_admin_passwd }}'
   tasks:
-    - name: ensure logrotate is installed
-      ansible.builtin.package:
-        name: logrotate
-
-#    - include_role:
-#        name: splunk
-#      vars:
-#        splunk_install_type: full
-
     - include_role:
         name: splunk
       vars:
-        splunk_install_type: uf
+        splunk_install_type: full
